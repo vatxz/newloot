@@ -1,0 +1,37 @@
+import pyautogui as pg
+import time
+
+def get_loot():
+    # Localiza todas las instancias de la imagen "wasp.png" en la pantalla dentro de la región especificada
+    loot = pg.locateAllOnScreen("imgs/wasp.png", confidence=0.7, region=constants.RADIO_LOOT)
+    
+    # Itera a través de cada cuadro delimitador encontrado
+    for box in loot:
+        # Calcula el centro del cuadro delimitador
+        x, y = pg.center(box)
+        
+        # Mueve el ratón al centro del cuadro delimitador
+        pg.moveTo(x, y)
+        
+        # Realiza un clic derecho
+        pg.click(button="right")
+        
+        # Añadir una pequeña pausa para asegurarse de que la acción se ha completado
+        time.sleep(0.5)
+        
+        # Busca nuevamente la misma imagen
+        sub_loot = pg.locateAllOnScreen("imgs/wasp.png", confidence=0.7, region=constants.RADIO_LOOT)
+        for sub_box in sub_loot:
+            sub_x, sub_y = pg.center(sub_box)
+            pg.moveTo(sub_x, sub_y)
+            pg.press('f10')
+            pg.click(button='left')
+            
+            # Añadir una pequeña pausa para asegurarse de que la acción se ha completado
+            time.sleep(0.5)
+            
+            # Vuelve a buscar la imagen principal para repetir el ciclo
+            break
+
+if __name__ == "__main__":
+    get_loot()
